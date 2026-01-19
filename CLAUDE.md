@@ -38,6 +38,19 @@ tests/
 - [Ex: "Commits en français avec préfixe feat/fix/docs"]
 - [Ex: "Tests obligatoires pour les nouvelles fonctions"]
 
+## Commandes slash
+
+Commandes personnalisées définies dans `.claude/commands/` :
+
+| Commande | Description |
+|----------|-------------|
+| `/write-spec` | Transforme une idée vague en specs claires (GIVEN/WHEN/THEN) |
+| `/citer` | Structure un prompt avec le format CITER (Context/Intent/Task/Expected/Restrictions) |
+| `/notes` | Documente le travail en cours pour assurer la continuité entre sessions |
+| `/verify` | Vérifie qu'une tâche est terminée avant commit (tests, lint, manuel, diff) |
+
+Voir aussi `.claude/skills/` pour la documentation détaillée de chaque commande.
+
 ## Ce que l'agent ne doit PAS faire
 
 - Ne pas modifier `.env` ou fichiers de secrets
