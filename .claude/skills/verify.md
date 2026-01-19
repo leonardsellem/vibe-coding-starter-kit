@@ -14,44 +14,38 @@ Vérifie qu'une tâche est réellement terminée avant de la déclarer complète
 
 ## Instructions
 
-Quand l'utilisateur invoque `/verify`, exécuter cette checklist dans l'ordre :
+Quand l'utilisateur invoque `/verify`, exécuter la checklist de manière **INTERACTIVE** avec l'outil `AskUserQuestion`.
+
+**RÈGLE IMPORTANTE** : Exécuter les commandes (test, lint, diff), puis utiliser `AskUserQuestion` pour confirmer chaque étape avec l'utilisateur avant de passer à la suivante.
+
+### Processus INTERACTIF
+
+1. **Package manager** via `AskUserQuestion` : npm/yarn/pnpm/bun ?
+2. **Exécuter tests** puis confirmer via `AskUserQuestion`
+3. **Exécuter lint** puis confirmer via `AskUserQuestion`
+4. **Vérification manuelle** via `AskUserQuestion` : happy path, erreurs, edge cases ?
+5. **Review diff** : afficher `git diff`, puis confirmer via `AskUserQuestion`
+6. **Specs satisfaites** via `AskUserQuestion`
+7. **Action finale** via `AskUserQuestion` : commit, corriger, ou résumé ?
+
+Voir `.claude/commands/verify.md` pour les questions prédéfinies.
 
 ### Checklist de vérification
 
 #### 1. Tests automatisés
-```bash
-[commande de test du projet]
-```
 - [ ] Tous les tests passent
 - [ ] Les nouveaux comportements ont des tests
 
-**Si échec** : Corriger avant de continuer.
-
 #### 2. Lint / Formatage
-```bash
-[commande de lint du projet]
-```
 - [ ] Pas d'erreurs de lint
 - [ ] Code formaté correctement
 
-**Si échec** : Corriger ou justifier l'exception.
-
 #### 3. Vérification manuelle
-
-Tester le comportement réel :
 - [ ] **Happy path** : Le cas normal fonctionne
 - [ ] **Cas d'erreur** : Les erreurs sont gérées proprement
 - [ ] **Edge cases** : Les cas limites identifiés dans les specs
 
-**Comment tester** :
-- Lancer l'app/le script
-- Reproduire les scénarios des specs (GIVEN/WHEN/THEN)
-- Vérifier visuellement ou via logs
-
 #### 4. Review du diff
-```bash
-git diff
-```
 - [ ] Pas de fichiers inattendus modifiés
 - [ ] Pas de code commenté "au cas où"
 - [ ] Pas de console.log / print de debug oubliés

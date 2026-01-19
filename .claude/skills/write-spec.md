@@ -10,14 +10,13 @@ Aide à transformer une idée vague en specs claires et vérifiables.
 
 ## Instructions
 
-Quand l'utilisateur invoque `/write-spec`, suivre ce processus :
+Quand l'utilisateur invoque `/write-spec`, suivre ce processus **INTERACTIF** avec l'outil `AskUserQuestion`.
+
+**RÈGLE IMPORTANTE** : Ne jamais lister toutes les questions d'un coup. Poser une question via `AskUserQuestion`, attendre la réponse, puis passer à la suivante.
 
 ### 1. Clarifier l'idée
 
-Poser 2-3 questions pour comprendre :
-- Quel est le problème à résoudre ?
-- Qui va utiliser cette fonctionnalité ?
-- Comment saura-t-on que c'est réussi ?
+Utiliser `AskUserQuestion` pour comprendre le type de problème, l'utilisateur cible, et les critères de succès. Voir `.claude/commands/write-spec.md` pour les questions prédéfinies.
 
 ### 2. Rédiger les requirements en GIVEN/WHEN/THEN
 

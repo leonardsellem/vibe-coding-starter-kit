@@ -2,7 +2,7 @@
 
 ## Projet
 
-- **Nom :** [nom-du-projet]
+- **Nom :** n8n-
 - **Description :** [1-2 phrases sur ce que fait le projet]
 - **Stack :** [ex: Python 3.11 + FastAPI | Node 20 + React | etc.]
 

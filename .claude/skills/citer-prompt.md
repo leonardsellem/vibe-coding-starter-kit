@@ -10,7 +10,9 @@ Aide à formuler des demandes claires et complètes à l'agent.
 
 ## Instructions
 
-Quand l'utilisateur invoque `/citer`, l'aider à structurer sa demande avec les 5 éléments CITER :
+Quand l'utilisateur invoque `/citer`, l'aider à structurer sa demande avec les 5 éléments CITER en utilisant l'outil `AskUserQuestion`.
+
+**RÈGLE IMPORTANTE** : Ne jamais poser les 5 questions CITER d'un coup. Procéder élément par élément avec `AskUserQuestion`, attendre chaque réponse avant de continuer.
 
 ### Les 5 éléments
 
@@ -22,18 +24,16 @@ Quand l'utilisateur invoque `/citer`, l'aider à structurer sa demande avec les 
 | **E** | Expected | À quoi ressemble le succès ? |
 | **R** | Restrictions | Quoi NE PAS faire ? |
 
-### Processus
+### Processus INTERACTIF
 
-1. **Demander l'idée brute** : "Quelle est ta demande ?"
+1. **Collecter C (Context)** via `AskUserQuestion`
+2. **Collecter I (Intent)** via `AskUserQuestion`
+3. **Collecter T (Task)** via `AskUserQuestion`
+4. **Collecter E (Expected)** via `AskUserQuestion`
+5. **Collecter R (Restrictions)** via `AskUserQuestion`
+6. **Reformuler et valider** via `AskUserQuestion`
 
-2. **Extraire chaque élément** en posant les questions :
-   - C : "Quel code/fichier existe déjà ?"
-   - I : "Quel problème ça résout ?"
-   - T : "Quelle action spécifique ?"
-   - E : "Comment tu sauras que c'est réussi ?"
-   - R : "Qu'est-ce qu'il ne faut surtout pas faire ?"
-
-3. **Reformuler en prompt structuré**
+Voir `.claude/commands/citer.md` pour les questions prédéfinies.
 
 ### Exemple
 

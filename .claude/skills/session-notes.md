@@ -15,49 +15,42 @@ Les conversations avec Claude ne persistent pas. Si la session est longue ou int
 
 ## Instructions
 
-Quand l'utilisateur invoque `/notes`, mettre à jour les notes de session avec le format structuré.
+Quand l'utilisateur invoque `/notes`, collecter les informations de manière **INTERACTIVE** avec l'outil `AskUserQuestion`.
 
-### Format de notes
+**RÈGLE IMPORTANTE** : Ne pas demander à l'utilisateur de décrire tout son travail d'un coup. Utiliser `AskUserQuestion` pour guider la collecte section par section.
+
+### Processus INTERACTIF
+
+1. **État actuel** via `AskUserQuestion` : où en es-tu ?
+2. **COMPLETED** via `AskUserQuestion` : qu'est-ce qui a été terminé ?
+3. **IN_PROGRESS** via `AskUserQuestion` : sur quoi travailles-tu ?
+4. **BLOCKERS** via `AskUserQuestion` : y a-t-il des blocages ?
+5. **DECISIONS** via `AskUserQuestion` : des choix importants ?
+6. **DISCOVERED** via `AskUserQuestion` : des découvertes inattendues ?
+7. **Destination** via `AskUserQuestion` : où sauvegarder ?
+
+Voir `.claude/commands/notes.md` pour les questions prédéfinies.
+
+### Format de notes (output)
 
 ```markdown
 ## Session [DATE]
 
 **COMPLETED:**
 - [Ce qui est terminé, avec chemins de fichiers]
-- Ex: "Validation email ajoutée dans src/components/LoginForm.tsx:45-67"
 
 **IN_PROGRESS:**
 - [État actuel + prochaine étape immédiate]
-- Ex: "Tests de validation en cours. NEXT: ajouter cas d'erreur"
 
 **BLOCKERS:**
 - [Ce qui bloque, si applicable]
-- Ex: "En attente de la maquette pour le message d'erreur"
 
 **DECISIONS:**
 - [Choix faits et pourquoi]
-- Ex: "Choisi validation au blur (pas onChange) pour éviter le spam"
 
 **DISCOVERED:**
 - [Découvertes inattendues, nouveaux problèmes]
-- Ex: "Le CSS .error n'existe pas, il faudra le créer"
 ```
-
-### Processus
-
-1. **Demander le contexte** : "Où en es-tu ? Qu'est-ce qui a avancé ?"
-
-2. **Remplir chaque section** :
-   - COMPLETED : Lister les fichiers modifiés avec lignes
-   - IN_PROGRESS : État exact + prochaine action
-   - BLOCKERS : Seulement si applicable
-   - DECISIONS : Choix non-évidents faits
-   - DISCOVERED : Surprises ou travail additionnel identifié
-
-3. **Proposer où sauvegarder** :
-   - Fichier `NOTES.md` à la racine
-   - Ou dans un commentaire de ticket/issue
-   - Ou dans le système de notes de l'utilisateur
 
 ### Exemple complet
 
