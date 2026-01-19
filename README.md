@@ -121,7 +121,6 @@ mon-projet/
 ## Ressources
 
 - [Documentation Claude Code](https://docs.anthropic.com/claude-code)
-- [Webinaire Vibe-Coding](https://example.com/webinar) <!-- À remplacer -->
 
 ## Licence
 
