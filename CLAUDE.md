@@ -2,9 +2,8 @@
 
 ## Projet
 
-- **Nom :** csv-cleaner
-- **Description :** Nettoyage et transformation de données CSV/Excel.
-- **Stack :** Markdown + Claude Code skills
+- **Nom :** Vibe-Coding Starter Kit
+- **Description :** Starter kit pour le vibe-coding avec Claude Code. Inclut commandes slash et documentation JIT.
 
 ## Commandes
 
