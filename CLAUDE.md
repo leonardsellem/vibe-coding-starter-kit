@@ -48,12 +48,13 @@ Commandes personnalisées définies dans `.claude/commands/` :
 | `/citer` | Structure un prompt avec le format CITER (Context/Intent/Task/Expected/Restrictions) |
 | `/notes` | Documente le travail en cours pour assurer la continuité entre sessions |
 | `/verify` | Vérifie qu'une tâche est terminée avant commit (tests, lint, manuel, diff) |
+| `/commit` | Commit les changements avec un message en français (convention type(scope): description) |
 
 Voir aussi `.claude/skills/` pour la documentation détaillée de chaque commande.
 
 ## Ce que l'agent ne doit PAS faire
 
 - Ne pas modifier `.env` ou fichiers de secrets
-- Ne pas commit sans validation explicite
+- Ne pas commit sans passer par `/commit` ou validation explicite
 - Ne pas ajouter de dépendances sans justification
 - Ne pas ignorer les erreurs de tests ou lint
