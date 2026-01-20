@@ -1,126 +1,98 @@
-# Vibe-Coding Starter Kit
+# repo-scaffold
 
-Kit de démarrage pour Claude Code.
+Starter kit pour le vibe-coding avec Claude Code. Inclut commandes slash et documentation JIT.
 
 ## Installation
 
 ```bash
-# Option 1 : Cloner dans un nouveau projet
-git clone https://github.com/VOTRE_USERNAME/vibe-coding-starter.git mon-projet
+# Cloner dans un nouveau projet
+git clone https://github.com/VOTRE_USERNAME/repo-scaffold.git mon-projet
 cd mon-projet
 rm -rf .git && git init
 
-# Option 2 : Copier dans un projet existant
-cp -r vibe-coding-starter/.claude mon-projet/
-cp vibe-coding-starter/CLAUDE.md mon-projet/
+# Ou copier dans un projet existant
+cp -r repo-scaffold/.claude mon-projet/
+cp repo-scaffold/CLAUDE.md mon-projet/
+cp repo-scaffold/LOG.md mon-projet/
 ```
 
-## Contenu
+## Commandes slash
+
+| Commande | Description |
+|----------|-------------|
+| `/write-spec` | Transforme une idée en specs GIVEN/WHEN/THEN |
+| `/citer` | Structure un prompt avec le format CITER |
+| `/documentation` | Documente le travail (LOG.md, CLAUDE.md, README.md) |
+| `/documentation --sync` | Régénère README.md depuis CLAUDE.md + LOG.md |
+| `/verify` | Vérifie qu'une tâche est terminée avant commit |
+| `/commit` | Commit avec message français |
+
+## Documentation tri-fichier
+
+| Fichier | Rôle |
+|---------|------|
+| `LOG.md` | Changelog chronologique (Added/Changed/Fixed/Removed) |
+| `CLAUDE.md` | Règles agent, conventions, structure |
+| `README.md` | Synthèse publique (générée via `/documentation --sync`) |
+
+### Hiérarchie JIT (Just-In-Time)
 
 ```
-├── CLAUDE.md                 # Contexte projet (à personnaliser)
+CLAUDE.md (racine)     ← Léger : snapshot, commandes, JIT map
+├── src/CLAUDE.md      ← Détaillé : patterns spécifiques
+└── tests/CLAUDE.md    ← Détaillé : conventions tests
+```
+
+**Principes :**
+1. **Nearest-wins** : l'agent lit le CLAUDE.md le plus proche
+2. **Racine légère** : pointeurs, pas détails
+3. **Token-efficient** : préférer `rg` à copier du code
+
+## Structure
+
+```
+repo-scaffold/
+├── CLAUDE.md                    # Contexte projet (léger, JIT)
+├── LOG.md                       # Changelog chronologique
+├── README.md                    # Synthèse (ce fichier)
 └── .claude/
-    └── skills/               # Méthodologie Vibe-Coding
-        ├── write-spec.md     # /write-spec → Écrire des specs
-        ├── citer-prompt.md   # /citer → Structurer un prompt
-        ├── session-notes.md  # /notes → Documenter le travail
-        └── verify.md         # /verify → Vérifier avant "c'est fait"
+    ├── commands/                # Commandes slash
+    │   ├── citer.md
+    │   ├── commit.md
+    │   ├── documentation.md
+    │   ├── verify.md
+    │   └── write-spec.md
+    ├── skills/                  # Documentation détaillée
+    │   ├── citer-prompt.md
+    │   ├── commit.md
+    │   ├── documentation.md
+    │   ├── verify.md
+    │   └── write-spec.md
+    └── templates/               # Templates CLAUDE.md
+        ├── CLAUDE-root.md       # Template racine
+        └── CLAUDE-subfolder.md  # Template sous-dossier
 ```
+
+## Derniers changements
+
+### 2026-01-20
+
+**Added:**
+- Système de documentation tri-fichier JIT (LOG.md, CLAUDE.md, README.md)
+- Skill `documentation.md` avec routage automatique
+- Commande `/documentation` avec options `--sync`, `--log`, `--claude`
+- Templates CLAUDE.md (racine et sous-dossier)
+
+**Changed:**
+- Architecture documentation : hiérarchie CLAUDE.md nearest-wins
+- Renommage `session-notes` → `documentation`
 
 ## Démarrage rapide
 
-### 1. Personnaliser CLAUDE.md (5 min)
-
-Ouvrez `CLAUDE.md` et remplissez :
-- Nom et description du projet
-- Stack technique
-- Commandes vérifiées
-- Structure du projet
-
-### 2. Utiliser les skills
-
-Les skills s'invoquent avec `/nom-du-skill` dans Claude Code :
-
-| Commande | Quand l'utiliser |
-|----------|------------------|
-| `/write-spec` | Avant de coder, pour définir ce qu'on veut |
-| `/citer` | Pour structurer une demande complexe |
-| `/notes` | Toutes les 15 min ou après un milestone |
-| `/verify` | Avant de dire "c'est terminé" |
-
-### Exemple de session
-
-```
-Vous: /write-spec
-      Je veux ajouter un bouton de déconnexion
-
-[Claude vous guide à travers GIVEN/WHEN/THEN et Non-Goals]
-
-Vous: Implémente selon ces specs
-
-[Claude code...]
-
-Vous: /verify
-
-[Claude vérifie tests, lint, comportement]
-```
-
-## Workflow recommandé
-
-```
-IDÉE → SPEC → PLAN → EXEC
- 2min   15min   5min   variable
-```
-
-1. **Idée** : Décrire informellement ce qu'on veut
-2. **Spec** : `/write-spec` pour formaliser avec GIVEN/WHEN/THEN
-3. **Plan** : Demander à Claude de lister les tâches
-4. **Exec** : Implémenter puis `/verify` avant de conclure
-
-## Progression suggérée
-
-| Semaine | Focus |
-|---------|-------|
-| 1 | CLAUDE.md + `/write-spec` |
-| 2 | Ajouter `/verify` systématiquement |
-| 3 | Utiliser `/notes` pour les sessions longues |
-| 4 | Maîtriser `/citer` pour les demandes complexes |
-
-## Personnalisation
-
-### Ajouter vos propres skills
-
-Créez un fichier dans `.claude/skills/` :
-
-```markdown
-# Mon Skill
-
-Description de ce que fait ce skill.
-
-## Instructions
-
-Quand l'utilisateur invoque ce skill :
-1. Faire ceci
-2. Puis cela
-```
-
-### Adapter CLAUDE.md par dossier
-
-Le fichier CLAUDE.md le plus proche gagne (nearest-wins) :
-
-```
-mon-projet/
-├── CLAUDE.md              # Règles globales
-├── src/
-│   └── api/
-│       └── CLAUDE.md      # Règles spécifiques API
-└── tests/
-    └── CLAUDE.md          # Règles spécifiques tests
-```
-
-## Ressources
-
-- [Documentation Claude Code](https://docs.anthropic.com/claude-code)
+1. **Personnaliser CLAUDE.md** — Remplir nom, description, stack, commandes
+2. **Utiliser `/write-spec`** — Avant de coder, pour définir les specs
+3. **Documenter avec `/documentation`** — Après chaque changement significatif
+4. **Vérifier avec `/verify`** — Avant de commit
 
 ## Licence
 
