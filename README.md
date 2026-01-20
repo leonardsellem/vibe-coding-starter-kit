@@ -20,12 +20,11 @@ cp repo-scaffold/LOG.md mon-projet/
 
 | Commande | Description |
 |----------|-------------|
-| `/write-spec` | Transforme une idée en specs GIVEN/WHEN/THEN |
-| `/citer` | Structure un prompt avec le format CITER |
-| `/documentation` | Documente le travail (LOG.md, CLAUDE.md, README.md) |
-| `/documentation --sync` | Régénère README.md depuis CLAUDE.md + LOG.md |
+| `/spec` | Transforme une idée en prompt CITER + specs GIVEN/WHEN/THEN |
 | `/verify` | Vérifie qu'une tâche est terminée avant commit |
 | `/commit` | Commit avec message français |
+| `/documentation` | Documente le travail (LOG.md, CLAUDE.md, README.md) |
+| `/documentation --sync` | Régénère README.md depuis CLAUDE.md + LOG.md |
 
 ## Documentation tri-fichier
 
@@ -57,17 +56,15 @@ repo-scaffold/
 ├── README.md                    # Synthèse (ce fichier)
 └── .claude/
     ├── commands/                # Commandes slash
-    │   ├── citer.md
-    │   ├── commit.md
-    │   ├── documentation.md
-    │   ├── verify.md
-    │   └── write-spec.md
+    │   ├── spec.md              # /spec — CITER + GIVEN/WHEN/THEN
+    │   ├── verify.md            # /verify — Checklist avant commit
+    │   ├── commit.md            # /commit — Message conventionnel
+    │   └── documentation.md     # /documentation — LOG + README
     ├── skills/                  # Documentation détaillée
-    │   ├── citer-prompt.md
-    │   ├── commit.md
-    │   ├── documentation.md
+    │   ├── spec.md
     │   ├── verify.md
-    │   └── write-spec.md
+    │   ├── commit.md
+    │   └── documentation.md
     └── templates/               # Templates CLAUDE.md
         ├── CLAUDE-root.md       # Template racine
         └── CLAUDE-subfolder.md  # Template sous-dossier
@@ -78,19 +75,22 @@ repo-scaffold/
 ### 2026-01-20
 
 **Added:**
+- Commande `/spec` fusionnant CITER + GIVEN/WHEN/THEN en un seul flux
 - Système de documentation tri-fichier JIT (LOG.md, CLAUDE.md, README.md)
-- Skill `documentation.md` avec routage automatique
-- Commande `/documentation` avec options `--sync`, `--log`, `--claude`
 - Templates CLAUDE.md (racine et sous-dossier)
 
 **Changed:**
+- Fusion de `/write-spec` et `/citer` en une seule commande `/spec`
 - Architecture documentation : hiérarchie CLAUDE.md nearest-wins
-- Renommage `session-notes` → `documentation`
+
+**Removed:**
+- `/write-spec` (remplacé par `/spec`)
+- `/citer` (remplacé par `/spec`)
 
 ## Démarrage rapide
 
-1. **Personnaliser CLAUDE.md** — Remplir nom, description, stack, commandes
-2. **Utiliser `/write-spec`** — Avant de coder, pour définir les specs
+1. **Personnaliser CLAUDE.md** — Remplir nom, description, stack, conventions
+2. **Utiliser `/spec`** — Avant de coder, pour définir le prompt structuré
 3. **Documenter avec `/documentation`** — Après chaque changement significatif
 4. **Vérifier avec `/verify`** — Avant de commit
 

@@ -2,8 +2,8 @@
 
 ## Projet
 
-- **Nom :** Vibe-Coding Starter Kit
-- **Description :** Starter kit pour le vibe-coding avec Claude Code. Inclut commandes slash et documentation JIT.
+- **Nom :** csv-cleaner
+- **Description :** Nettoyage et transformation de données CSV/Excel.
 - **Stack :** Markdown + Claude Code skills
 
 ## Commandes
@@ -44,6 +44,10 @@ CLAUDE.md (racine)     ← Léger : snapshot, commandes, JIT map
 
 ## Conventions
 
+- Dates en ISO 8601 (YYYY-MM-DD)
+- Volumes numériques purs (pas de "K" ou espaces)
+- Encodage UTF-8 toujours
+- Noms de colonnes en snake_case
 - Commits en français avec préfixe `feat/fix/docs`
 - Documentation triée : LOG.md pour historique, CLAUDE.md pour règles
 
@@ -51,15 +55,17 @@ CLAUDE.md (racine)     ← Léger : snapshot, commandes, JIT map
 
 | Commande | Description |
 |----------|-------------|
-| `/write-spec` | Transforme une idée en specs GIVEN/WHEN/THEN |
-| `/citer` | Structure un prompt avec le format CITER |
-| `/documentation` | Documente le travail (LOG.md, CLAUDE.md, README.md) |
-| `/documentation --sync` | Régénère README.md depuis CLAUDE.md + LOG.md |
+| `/spec` | Transforme une idée en prompt CITER + specs GIVEN/WHEN/THEN |
 | `/verify` | Vérifie qu'une tâche est terminée avant commit |
 | `/commit` | Commit avec message français |
+| `/documentation` | Documente le travail (LOG.md, CLAUDE.md, README.md) |
+| `/documentation --sync` | Régénère README.md depuis CLAUDE.md + LOG.md |
 
 ## Interdit
 
+- Ne pas supprimer de lignes sans raison documentée
+- Ne pas modifier les données "métier" (juste le format)
+- Toujours garder le fichier original intact
 - Ne pas modifier `.env` ou fichiers de secrets
 - Ne pas commit sans validation (`/commit` ou explicite)
 - Ne pas ajouter de dépendances sans justification
