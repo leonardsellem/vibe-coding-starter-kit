@@ -20,12 +20,13 @@ Docs spécifiques par dossier (nearest-wins) :
 - `.claude/skills/` → Documentation détaillée des skills
 - `.claude/templates/` → Templates CLAUDE.md (racine et sous-dossier)
 
-## Documentation tri-fichier
+## Documentation quad-fichier
 
 | Fichier | Rôle | MAJ |
 |---------|------|-----|
 | `LOG.md` | Changelog chronologique (Added/Changed/Fixed/Removed) | Après chaque changement |
 | `CLAUDE.md` | Règles agent, conventions, structure | Patterns stables |
+| `CONTEXT.md` | État actuel (context survival) | Fin de session |
 | `README.md` | Synthèse publique | `/documentation --sync` |
 
 ### Hiérarchie JIT
@@ -57,7 +58,8 @@ CLAUDE.md (racine)     ← Léger : snapshot, commandes, JIT map
 | `/spec` | Transforme une idée en prompt CITER + specs GIVEN/WHEN/THEN |
 | `/verify` | Vérifie qu'une tâche est terminée avant commit |
 | `/commit` | Commit avec message français |
-| `/documentation` | Documente le travail (LOG.md, CLAUDE.md, README.md) |
+| `/documentation` | Documente le travail (LOG.md, CLAUDE.md, CONTEXT.md, README.md) |
+| `/documentation --context` | Met à jour CONTEXT.md (context survival) |
 | `/documentation --sync` | Régénère README.md depuis CLAUDE.md + LOG.md |
 
 ## Interdit

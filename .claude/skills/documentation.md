@@ -1,4 +1,4 @@
-# Documentation Tri-Fichier JIT
+# Documentation Quad-Fichier JIT
 
 Documente le travail pour assurer la continuité entre sessions. Route automatiquement vers le fichier approprié.
 
@@ -8,6 +8,7 @@ Documente le travail pour assurer la continuité entre sessions. Route automatiq
 |---------|---------|---------------|
 | `LOG.md` | Changelog chronologique (Added/Changed/Fixed/Removed) | Après chaque changement |
 | `CLAUDE.md` | Règles, conventions, structure pour agents | Quand patterns stables |
+| `CONTEXT.md` | État actuel (context survival) | Fin de session |
 | `README.md` | Synthèse générée depuis CLAUDE.md + LOG.md | Après `/documentation --sync` |
 
 ## Hiérarchie JIT (Just-In-Time)
@@ -33,6 +34,62 @@ L'agent détermine le fichier cible selon le type de contenu :
 | Changement de code, bug fix, feature ajoutée | `LOG.md` |
 | Règle, convention, pattern stable | `CLAUDE.md` (niveau approprié) |
 | Structure de dossier, stack, commandes | `CLAUDE.md` racine |
+| État actuel, handoff de session | `CONTEXT.md` |
+
+## CONTEXT.md — Context Survival
+
+### Pourquoi ?
+
+> "Les notes survivent, ta conversation non"
+
+Les agents ont une fenêtre de contexte limitée. Quand elle se remplit, les anciens messages sont *compactés* — l'agent oublie. CONTEXT.md permet de reprendre le travail sans tout ré-expliquer.
+
+### Format
+
+```markdown
+# CONTEXT.md
+
+## Snapshot
+- **Date :** YYYY-MM-DD
+- **Phase :** [setup / développement / refacto / debug]
+
+## COMPLETED
+- [description] dans `fichier:ligne`
+
+## IN_PROGRESS
+- [tâche] → NEXT: [prochaine action]
+
+## BLOCKERS
+- [blocker] — [raison]
+
+## DECISIONS
+- [décision] — [rationale]
+
+## DISCOVERED
+- [découverte] — [action suggérée]
+
+## Handoff
+SESSION_END: [résumé 1-2 lignes]
+NEXT SESSION:
+1. [action prioritaire]
+2. [action suivante]
+CONTEXT FILES:
+- [fichier] (raison)
+```
+
+### Quand mettre à jour CONTEXT.md
+
+- **Fin de session** — Avant de fermer Claude Code
+- **Après un milestone** — Une feature terminée, un bug fixé
+- **Quand la conversation devient longue** — Signe de compaction imminente
+- **Avant une pause** — Pour reprendre plus tard
+
+### Bonnes pratiques
+
+1. **Écrire pour un futur agent** — Pas de références à "tantôt" ou "hier"
+2. **Inclure les chemins de fichiers** — `src/api/orders.py:47` pas "le fichier orders"
+3. **NEXT explicite** — La prochaine action concrète, pas "continuer"
+4. **Nettoyer régulièrement** — Supprimer les COMPLETED obsolètes
 
 ## Instructions
 
@@ -58,6 +115,7 @@ Quand l'utilisateur invoque `/documentation`, procéder ainsi :
     "options": [
       {"label": "Changement code", "description": "Bug fix, feature, refacto → LOG.md"},
       {"label": "Règle/Pattern", "description": "Convention, architecture → CLAUDE.md"},
+      {"label": "État actuel", "description": "Context survival → CONTEXT.md"},
       {"label": "Sync README", "description": "Générer README.md depuis les autres fichiers"},
       {"label": "Session complète", "description": "Documenter tout avant de partir"}
     ]
@@ -120,7 +178,29 @@ Si sous-dossier ou nouveau, demander le chemin.
 }
 ```
 
-#### Étape 2c : Si sync README
+#### Étape 2c : Si état actuel → CONTEXT.md
+
+```json
+{
+  "questions": [{
+    "question": "Quelle section mettre à jour ?",
+    "header": "Section",
+    "multiSelect": true,
+    "options": [
+      {"label": "COMPLETED", "description": "Ce qui a été fait (avec fichiers:lignes)"},
+      {"label": "IN_PROGRESS", "description": "Tâche en cours + prochaine étape"},
+      {"label": "BLOCKERS", "description": "Ce qui bloque la progression"},
+      {"label": "DECISIONS", "description": "Choix faits et pourquoi"},
+      {"label": "DISCOVERED", "description": "Problèmes trouvés, nouveaux besoins"},
+      {"label": "Handoff", "description": "Notes de passage pour la prochaine session"}
+    ]
+  }]
+}
+```
+
+Puis collecter les détails pour chaque section sélectionnée.
+
+#### Étape 2d : Si sync README
 
 1. Lire `CLAUDE.md` racine pour snapshot projet
 2. Lire `LOG.md` pour dernières entrées (5 dernières)
@@ -130,12 +210,13 @@ Si sous-dossier ou nouveau, demander le chemin.
    - Derniers changements (depuis LOG.md)
    - Structure (depuis CLAUDE.md)
 
-#### Étape 2d : Si session complète
+#### Étape 2e : Si session complète
 
 Combiner :
 1. Collecter changements → LOG.md
 2. Collecter patterns découverts → CLAUDE.md approprié
-3. Proposer sync README
+3. **Mettre à jour CONTEXT.md** → état actuel pour la prochaine session
+4. Proposer sync README
 
 ### Création JIT de CLAUDE.md
 
@@ -210,5 +291,6 @@ Nearest-wins: priorité sur la racine.
 
 - **LOG.md** : Être factuel, inclure fichiers:lignes
 - **CLAUDE.md** : Être prescriptif, actionnable
+- **CONTEXT.md** : Écrire pour un futur agent qui n'a pas le contexte
 - **Nearest-wins** : Plus le CLAUDE.md est proche, plus il est spécifique
 - **Token efficiency** : Préférer `rg "pattern" src/` à copier du code
